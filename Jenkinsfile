@@ -12,7 +12,7 @@ pipeline {
         stage('customize') {
             steps {
                 script{
-                   echo 'Script customization..'
+                   echo 'Script customization...'
                 }
             }
         }        
