@@ -29,28 +29,28 @@ pipeline {
                 }
             }
         }   
-        stage('clean'){
-            steps{
-                      cleanWs cleanWhenSuccess: false, notFailBuild: true 
-            }
-        }
+//         stage('clean'){
+//             steps{
+//                       cleanWs cleanWhenSuccess: false, notFailBuild: true 
+//             }
+//         }
     }
-}
+
    
   
-//         post {
+        post {
     
-//          always {
+         failure{
 
-//                                 emailext    attachLog: false,
-//                                     body: "\nHi Team,\n ${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-//                                     subject: 'Status of Jenkins Build',
-//                                      to: '${DEFAULT_RECIPIENTS}'
-                         
-//                                cleanWs cleanWhenSuccess: false, notFailBuild: true
+                                emailext    attachLog: false,
+                                    body: "\nHi Team,\n ${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                                    subject: 'Status of Jenkins Build',
+                                     to: '${DEFAULT_RECIPIENTS}'
+                               
+                               cleanWs cleanWhenSuccess: false, notFailBuild: true
                                    
                      
-//                                 }  
+                                }  
     
-//                             }
-//  }
+                            }
+ }
