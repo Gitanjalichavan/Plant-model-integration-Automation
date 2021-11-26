@@ -13,24 +13,44 @@ pipeline {
             steps {
                 script{
                    echo 'Script customization...'
-                }
-            }
-        }        
-    }
-  
-        post {
-    
-         always {
-
-                                emailext    attachLog: false,
+                    try{
+                        def config= '[]'
+                        config = readJSON file: "${WORKSPACE}\\mail.json"
+                        emailext    attachLog: false,
                                     body: "\nHi Team,\n ${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
                                     subject: 'Status of Jenkins Build',
-                                     to: '${DEFAULT_RECIPIENTS}'
+                                     to: "${config.email}"
+                    }
+                    catch(err){
+                         echo 'Check the jenkinslog for the error..!'
+                         skipRemainingStages = false
+                        echo "next stage skip: = ${skipRemainingStages}"
+                    }
+                }
+            }
+        }   
+        stage('clean'){
+            steps{
+                      cleanWs cleanWhenSuccess: false, notFailBuild: true 
+            }
+        }
+    }
+}
+   
+  
+//         post {
+    
+//          always {
+
+//                                 emailext    attachLog: false,
+//                                     body: "\nHi Team,\n ${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+//                                     subject: 'Status of Jenkins Build',
+//                                      to: '${DEFAULT_RECIPIENTS}'
                          
-                               cleanWs cleanWhenSuccess: false, notFailBuild: true
+//                                cleanWs cleanWhenSuccess: false, notFailBuild: true
                                    
                      
-                                }  
+//                                 }  
     
-                            }
- }
+//                             }
+//  }
