@@ -31,7 +31,7 @@ pipeline {
         }   
         stage('clean'){
             steps{
-                      cleanWs cleanWhenSuccess: false, notFailBuild: true 
+                      cleanWs cleanWhenSuccess: true, notFailBuild: true 
             }
         }
     }
